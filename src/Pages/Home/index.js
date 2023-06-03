@@ -21,6 +21,7 @@ export default function Home() {
     const [paramsPesq, setParamsPesq] = useState('titulo');
     const [filterTitulo, setFilterTitulo] = useState([]);
     const [filterId, setFilterId] = useState([]);
+    // eslint-disable-next-line
     const [itemsPerPage, setItemsPerPage] = useState(12);
     const [currentPage, setCurrentPage] = useState(0);
     const [substrDescr, setSubstrDescr] = useState(10);
@@ -42,14 +43,10 @@ export default function Home() {
     useEffect(() => {
 
         async function loadLivros() {
-
             const response = await api.get('/livros');
             setLivros(response.data);
         }
-
         loadLivros();
-
-
     }, []);
 
     const lowerPesquisa = pesquisa.toLocaleLowerCase();
@@ -70,7 +67,6 @@ export default function Home() {
     }, [lowerPesquisa, livros, pesquisa, paramsPesq]);
 
     useEffect(() => {
-
         function loadPesquisaId() {
             if (pesquisa !== '' && paramsPesq === 'id') {
                 setFilterId(
@@ -92,7 +88,7 @@ export default function Home() {
     function handleFavorito(id) {
 
 
-        setSelectLivro(...livros.filter((livro,index,arr) =>
+        setSelectLivro(...livros.filter((livro, index, arr) =>
             livro.id === id
         ));
 
@@ -171,28 +167,32 @@ export default function Home() {
                                 <S.MyCard.Img variant="top" src={imglivro} />
                                 <S.MyCard.Body>
                                     <S.MyCard.Title className='titulo'
-                                        onMouseOver={() => setSubstrTitulo(livro.titulo.length)}
-                                        onMouseOut={() => setSubstrTitulo(18)}
+                                        onMouseOver={() => setSubstrTitulo(livro.titulo.size)}
+                                        onMouseLeave={() => setSubstrTitulo(18)}
                                     >
                                         {livro.titulo.substring(0, substrTitulo)}
 
                                     </S.MyCard.Title>
 
                                     <S.MyCard.Text className='descricao'>
-                                        <span onMouseOver={() => setSubstrDescr(livro.descricao.length)}
+                                        <span
+                                            onMouseOver={() => setSubstrDescr(livro.descricao.size)}
                                             onMouseOut={() => setSubstrDescr(10)}
-                                        >Descrição :{livro.descricao.substring(0, substrDescr)}</span>
+                                        >
+                                            Descrição : {livro.descricao}
+                                        </span>
+                                      
                                     </S.MyCard.Text>
                                     <S.MyCard.Text>
                                         <span>Autor: {livro.autor}</span>
 
                                     </S.MyCard.Text>
                                     <S.MyCard.Text>
-                                    <span>Enviado por: {livro.nome}</span>
+                                        <span>Enviado por: {livro.nome}</span>
                                     </S.MyCard.Text>
 
 
-                                        
+
                                     <S.MyBtnCards>
 
                                         <UpDeleteModal dataLivro={livro} />
